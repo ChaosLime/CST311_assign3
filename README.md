@@ -27,3 +27,14 @@ There should be the message received and displayed on the server, and the server
 
 
 We can tweak the messages and client input as needed...
+
+UPDATE and NOTICE: <br>
+Withn the "nick" directory, I am built and developed a 
+<br>client server system that can connect any number of clients.
+<br> Please advise. Still needs to return other clients inputs back to 
+<br>the users, but it is pretty cool. Runs on python 3.
+
+To use programs, you can run server.py plainly,<br>
+for client.py use "python client.py X Bob" as an example.
+
+Uses port 12000 on localhost currently.
