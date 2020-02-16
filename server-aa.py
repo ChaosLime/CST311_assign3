@@ -22,17 +22,18 @@ def listenToClientMessages(clientsocket,addr):
 
     clientName[clname] = clientsocket
 
-    received.append(msg)
+    if ":" not in msg:
+        received.append(msg)
 
     print("Client " + msg)
 
 # check if both clients have sent messages
 
-    if(len(received)==2):
+    if(len(received) == 2):
 
         sendToAllClients()
 
-# Send message to all other clients except the sender
+# Send message to all other clients except the sender (not the server)
 
 def sendToAllClients():
     for (name,c) in clientName.items():
@@ -45,7 +46,7 @@ def sendToAllClients():
 
 def getServerSocket():
 
-    port = int(sys.argv[1])
+    port = 12000 #int(sys.argv[1])
 
     ip = '127.0.0.1'
 

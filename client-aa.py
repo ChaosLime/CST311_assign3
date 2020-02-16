@@ -7,17 +7,17 @@ import threading
 
 ##client
 
-port = int(sys.argv[1])
-#port = 12000
+#port = int(sys.argv[1])
+port = 12000
 
 # Client passed in as commandline argument (X/Y)
 
 #client = int(sys.argv[2])
-client = sys.argv[2]
+client = sys.argv[1]
 
 # Name of client (Alice/Bob)
 
-name = sys.argv[3]
+#name = sys.argv[2]
 
 # connect with server at port in commandline argument
 
@@ -54,10 +54,17 @@ def receiveMessages(s):
     print(msg)
 
 def main():
-
+    global name
+    
     ip = '127.0.0.1'
+    
+    name = raw_input("Enter your name here: ")
+
+    print name
 
     s = getConnection(port,ip)
+
+    s.send(name.encode())
 
     t = threading.Thread(target=receiveMessages, args=[s])
 
