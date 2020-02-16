@@ -38,3 +38,7 @@ To use programs, you can run server.py plainly,<br>
 for client.py use "python client.py X Bob" as an example.
 
 Uses port 12000 on localhost currently.
+
+UPDATE! Feb 15
+Nick's directory has client that is now threaded, but there appears to some sort<br>
+of infinite loop going on after some inputs. Not entirely sure what's up.
