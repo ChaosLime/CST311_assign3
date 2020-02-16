@@ -1,4 +1,9 @@
 #server
+#Multithreading is needed specifically on the server side because the
+#program needs to be able to recieve input from any connection at any
+#time. Trying to implement this in a non-multi threaded application
+#would result in issues with the timing of both sending and recieving
+#messages from the clients.
 import socket
 
 import sys
@@ -45,6 +50,10 @@ def getServerSocket():
     ip = '127.0.0.1'
 
     s = socket.socket()
+    # SO_REUSEADDR flag tells the kernel to reuse a local socket in
+    # TIME_WAIT state, without waiting for its natural timeout to expire
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    
 
     s.bind((ip, port))
 
