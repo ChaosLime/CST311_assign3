@@ -27,32 +27,27 @@ def main():
 
     print("Enter 'quit' to exit")
 
-    message = input(name + " -> ")
+    message = "Connected!" #input(name + " -> ")
 
     msgsent = messagePrep(client_name,message)
     #this sends the message to the server here, first iteration.
     #send client info here to server?
     soc.sendall(msgsent.encode("utf8"))
 
+    try:
+        Thread(target=server_input_thread, args=(soc, host, port)).start()
+    except:
+        print("Thread did not start.")
+        traceback.print_exc()
+
     while message != 'quit':
-        #I don't know if this is even needed.
-        if soc.recv(5120).decode("utf8") == "-":
-            pass        # null operation
-        try:
-            Thread(target=server_input_thread, args=(soc, host, port)).start()
-        except:
-            print("Thread did not start.")
-            traceback.print_exc()
 
         message = input(name + " -> ")
-        #second iteration for message to be sent to server.
-        #this is due to the fact that when connecting to the server
-        #the clients thread has to send a packet to be received
-        #by the server.
-        msgsent = messagePrep(client_name,message)
+        msgsent = messagePrep(client_name, message)
         soc.sendall(msgsent.encode("utf8"))
 
     soc.send(b'--quit--')
+    soc.close()
 
 
 def messagePrep(client_name, message):
@@ -71,18 +66,19 @@ def receive_input(connection, max_buffer_size):
 
     return result
 
-## TODO be able to display inputs from other hosts from the server.
-def server_input_thread(connection, ip, port, max_buffer_size = 5120):
+def server_input_thread(connection, host, port, max_buffer_size = 5120):
     is_active = True
-    server_response = receive_input(connection, max_buffer_size)
     #is buffer empty?
     print("in server thread")
 
     while is_active:
-        print(server_response)
+        server_response = receive_input(connection, max_buffer_size)
+        if name not in server_response:
+            print(server_response)
+            
         #does this socket connection share a buffer?
         connection.sendall(server_response.encode("utf8"))
 
-        #connection.close()
+    connection.close()
 
 main()
